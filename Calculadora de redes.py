@@ -22,9 +22,11 @@ def conversor_bits_hosts(hosts: int, escolha: int, rede: list):
                 #isso pega qualquer valor entre dois num. dentro da lista bits e salta para o valor maior mais proximo
                 if bit_list[j] < hosts and bit_list[j-1] > hosts:
                     return(rede.append(bit_list[j-1]), rede.append(bit_list.index(bit_list[j-1]) + 2))
-    else:
+    elif escolha == 2:
         #isso só converte os bits para hosts
         return(rede.append(bit_list[hosts - 2]), rede.append(hosts))
+    else:
+        return(None)
 
 #converte os bits para numerico seguindo o padrão de sub-mask 255.255.255.255
 def conversor_bits_sub(rede: list):
@@ -51,46 +53,77 @@ def conversor_bits_sub(rede: list):
     #Falta criar parte que faz o processo inverso 255.255.255.255 para usuarios e bits
     return(rede.append(bina_dec))
 
+#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Programa no terminal-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+pegar_opcao = ["Hosts", "Bits", "Máscara"]
+pegar_opcao_ABC = ["A", "B", "C"]
+
+while True:
+    opcao_rede = int(input("Digite o tipo de rede que deseja ([1] A 10.0.0.0) ([2] B 172.16.0.0) ([3] C 192.168.0.0): "))
+    if opcao_rede > 0 and opcao_rede < 4:
+        break
+while True:
+    opcao_host = int(input("Qual tipo de host deseja ([1] Hosts) ([2] Bits) ([3] Mask): ")) 
+    if opcao_host > 0 or opcao_host < 4:
+        while True:
+            usuarios = int(input(f"Digite o valor correspondente aos {pegar_opcao[opcao_host - 1]}: "))
+            if opcao_host == 2 and usuarios <= 31 and usuarios > 0 :
+                break
+            elif opcao_host == 1 and usuarios >= 2 and usuarios < 1073741824:
+                break
+            elif opcao_host == 3:
+                break
+        conversor_bits_hosts(usuarios, opcao_host, rede)
+        conversor_bits_sub(rede)
+        break
+
+print("")
+print(f"Tipo da rede ({pegar_opcao_ABC[opcao_rede - 1]})")
+print(f"A quantidade de hosts {rede[0]}")
+print(f"A quantidade de bits {rede[1]}")
+print(f"A máscara {rede[2]}")
+
+
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=tela-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-ctk.set_appearance_mode("Dark")
+#Por hora essa parte só funciona no design, na parte de usabilidade ainda não avancei
+
+"""ctk.set_appearance_mode("Dark")
 ctk.set_default_color_theme("blue")
 
-janela = ctk.CTk()
+class app(ctk.CTk):
+    def __init__(self):
+        super().__init__()
+        self.title("Calculadora de redes LAN")
+        self.geometry("400x600")
 
-janela.title("Calculadora de redes LAN")
-janela.geometry("400x600")
+        def selecao_A(choice):
+            tipo_de_rede = choice
+            print(tipo_de_rede)
 
-def selecao_A(choice):
-    tipo_de_rede = choice
-    return(tipo_de_rede)
+        def selecao_host(choice):
+            tipo_host = choice
+            return(tipo_host)
 
-def selecao_host(choice):
-    tipo_host = choice
-    return(tipo_host)
+        pergunta = ctk.CTkLabel(self, text="Calculadora de LANs", font=ctk.CTkFont(size=25, weight="bold")).pack(pady = (25, 50))
 
-pergunta = ctk.CTkLabel(janela, text="Calculadora de LANs", font=ctk.CTkFont(size=25, weight="bold")).pack(pady = (25, 50))
+        #Seleção do tipo de rede
 
-#Seleção do tipo de rede
+        pergunta = ctk.CTkLabel(self, text="Qual o tipo de rede", font=ctk.CTkFont(size=15, weight="bold")).pack(pady = (0, 25))
 
-pergunta = ctk.CTkLabel(janela, text="Qual o tipo de rede", font=ctk.CTkFont(size=15, weight="bold")).pack(pady = (0, 25))
+        botao_A = ctk.CTkOptionMenu(self, values=["Tipo A (10.0.0.0)","Tipo B (172.16.0.0)","Tipo C (192.168.0.0)"], font=ctk.CTkFont(weight="bold"), command=selecao_A).pack(pady = (0, 25))
 
-botao_A = ctk.CTkOptionMenu(janela, values=["Tipo A (10.0.0.0)","Tipo B (172.16.0.0)","Tipo C (192.168.0.0)"], font=ctk.CTkFont(weight="bold"), command=selecao_A).pack(pady = (0, 25))
+        #Seleção de máscara
 
-#Seleção de máscara
+        pergunta = ctk.CTkLabel(self, text="Qual a forma da máscara", font=ctk.CTkFont(size=15, weight="bold")).pack(pady = (0, 0))
 
-pergunta = ctk.CTkLabel(janela, text="Qual a forma da máscara", font=ctk.CTkFont(size=15, weight="bold")).pack(pady = (0, 0))
+        botao_user = ctk.CTkOptionMenu(self, values=["Usuários", "Bits", "Máscara"], font=ctk.CTkFont(weight="bold"), command=selecao_host).pack(pady = (25, 0))
 
-botao_user = ctk.CTkOptionMenu(janela, values=["Usuários", "Bits", "Máscara"], font=ctk.CTkFont(weight="bold"), command=selecao_host).pack(pady = (25, 0))
+        campo_valor = ctk.CTkEntry(self, placeholder_text= "Digite aqui!").pack(pady = 10)
 
-campo_valor = ctk.CTkEntry(janela, placeholder_text= "Digite aqui!").pack(pady = 10)
+        #Realizar o calculo
 
-#Realizar o calculo
+        botao_calc = ctk.CTkButton(self, text="Calcular", font=ctk.CTkFont(size=25, weight="bold")).pack(pady = (35, 25))
 
-botao_calc = ctk.CTkButton(janela, text="Calcular", font=ctk.CTkFont(size=25, weight="bold")).pack(pady = (35, 25))
-
-janela.mainloop()
-
-#conversor_bits_hosts(usuarios, opcao_host, rede)
-#conversor_bits_sub(rede)
-#print(rede)
+janela = app()
+janela.mainloop()"""
