@@ -56,46 +56,41 @@ def conversor_bits_sub(rede: list):
 ctk.set_appearance_mode("Dark")
 ctk.set_default_color_theme("blue")
 
-class app(ctk.CTk):
-    #executa oque tinha ctk.CTk
-    def __init__(self):
-        super().__init__()
-        #executa os meu cod. self seria janela
-        self.title("Calculadora de redes LAN")
-        self.geometry("400x600")
+janela = ctk.CTk()
 
-        self.pergunta = ctk.CTkLabel(self, text="Calculadora de LANs", font=ctk.CTkFont(size=25, weight="bold")).pack(pady = (25, 50))
+janela.title("Calculadora de redes LAN")
+janela.geometry("400x600")
 
-        #Seleção do tipo de rede
+def selecao_A(choice):
+    tipo_de_rede = choice
+    return(tipo_de_rede)
 
-        self.pergunta = ctk.CTkLabel(self, text="Qual o tipo de rede", font=ctk.CTkFont(size=15, weight="bold")).pack(pady = (0, 25))
+def selecao_host(choice):
+    tipo_host = choice
+    return(tipo_host)
 
-        self.botao_A = ctk.CTkOptionMenu(self, values=["Tipo A (10.0.0.0)","Tipo B (172.16.0.0)","Tipo C (192.168.0.0)"], font=ctk.CTkFont(weight="bold")).pack(pady = (0, 25))
+pergunta = ctk.CTkLabel(janela, text="Calculadora de LANs", font=ctk.CTkFont(size=25, weight="bold")).pack(pady = (25, 50))
 
-        #Seleção de máscara
+#Seleção do tipo de rede
 
-        self.pergunta = ctk.CTkLabel(self, text="Qual a forma da máscara", font=ctk.CTkFont(size=15, weight="bold")).pack(pady = (0, 0))
+pergunta = ctk.CTkLabel(janela, text="Qual o tipo de rede", font=ctk.CTkFont(size=15, weight="bold")).pack(pady = (0, 25))
 
-        self.botao_user = ctk.CTkOptionMenu(self, values=["Usuários", "Bits", "Máscara"], font=ctk.CTkFont(weight="bold")).pack(pady = (25, 0))
+botao_A = ctk.CTkOptionMenu(janela, values=["Tipo A (10.0.0.0)","Tipo B (172.16.0.0)","Tipo C (192.168.0.0)"], font=ctk.CTkFont(weight="bold"), command=selecao_A).pack(pady = (0, 25))
 
-        self.campo_valor = ctk.CTkEntry(self, placeholder_text= "Digite aqui").pack(pady = 10)
+#Seleção de máscara
 
-        #Realizar o calculo
+pergunta = ctk.CTkLabel(janela, text="Qual a forma da máscara", font=ctk.CTkFont(size=15, weight="bold")).pack(pady = (0, 0))
 
-        self.botao_calc = ctk.CTkButton(self, text="Calcular", font=ctk.CTkFont(size=25, weight="bold")).pack(pady = (35, 25))
+botao_user = ctk.CTkOptionMenu(janela, values=["Usuários", "Bits", "Máscara"], font=ctk.CTkFont(weight="bold"), command=selecao_host).pack(pady = (25, 0))
 
-        def tipo_rede(self):
-            if self.botao_A.get() == "Tipo A (10.0.0.0)":
-                print("Tipo A")
-            elif self.botao_A.get() == "Tipo B (172.16.0.0)":
-                print("Tipo B")
-            else:
-                print("Tipo C")
+campo_valor = ctk.CTkEntry(janela, placeholder_text= "Digite aqui!").pack(pady = 10)
 
-janela = app()
+#Realizar o calculo
+
+botao_calc = ctk.CTkButton(janela, text="Calcular", font=ctk.CTkFont(size=25, weight="bold")).pack(pady = (35, 25))
 
 janela.mainloop()
 
-#conversor_bits_hosts(usuarios, opcao_de_host, rede)
+#conversor_bits_hosts(usuarios, opcao_host, rede)
 #conversor_bits_sub(rede)
 #print(rede)
