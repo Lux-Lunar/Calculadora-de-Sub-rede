@@ -5,7 +5,8 @@ import customtkinter as ctk
 rede = []
 
 #converte o valor de hosts para bits e vice versa seguindo o principio da escalabilidade
-def conversor_bits_hosts(hosts: int, escolha: int, rede: list):
+def conversor_bits_hosts(hosts, escolha: int, rede: list):
+    quantidade = 0
     #cria a lista de bits
     bit = 1
     bit_list = [] * 31
@@ -13,7 +14,19 @@ def conversor_bits_hosts(hosts: int, escolha: int, rede: list):
         bit *= 2
         bit_list.insert(i, bit)
     bit_list.sort(reverse = True)
-    if escolha == 1:
+
+    if escolha == 3 or escolha == 2:
+        if escolha == 3: 
+            hosts = hosts.split(".")
+            for i in range(3):
+                hosts[i] = int(hosts[i])
+                hosts[i] = bin(hosts[i])
+                hosts[i] = str(hosts[i])
+                quantidade += hosts[i].count("1")
+            hosts = quantidade
+        #isso só converte os bits para hosts
+        return(rede.append(bit_list[hosts - 2]), rede.append(hosts))
+    elif escolha == 1:
         if hosts in bit_list:
             #isso vai pegar os numeros que estão na lista bits e transformar no proximo host disponivel
             return(rede.append(bit_list[bit_list.index(hosts) - 1]), rede.append(bit_list.index(hosts) + 1))  
@@ -22,11 +35,6 @@ def conversor_bits_hosts(hosts: int, escolha: int, rede: list):
                 #isso pega qualquer valor entre dois num. dentro da lista bits e salta para o valor maior mais proximo
                 if bit_list[j] < hosts and bit_list[j-1] > hosts:
                     return(rede.append(bit_list[j-1]), rede.append(bit_list.index(bit_list[j-1]) + 2))
-    elif escolha == 2:
-        #isso só converte os bits para hosts
-        return(rede.append(bit_list[hosts - 2]), rede.append(hosts))
-    else:
-        return(None)
 
 #converte os bits para numerico seguindo o padrão de sub-mask 255.255.255.255
 def conversor_bits_sub(rede: list):
@@ -55,34 +63,34 @@ def conversor_bits_sub(rede: list):
 
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=Programa no terminal-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-pegar_opcao = ["Hosts", "Bits", "Máscara"]
+pegar_opcao = ["hosts", "bits", "máscara"]
 pegar_opcao_ABC = ["A", "B", "C"]
 
-while True:
+"""while True:
     opcao_rede = int(input("Digite o tipo de rede que deseja ([1] A 10.0.0.0) ([2] B 172.16.0.0) ([3] C 192.168.0.0): "))
     if opcao_rede > 0 and opcao_rede < 4:
-        break
+        break"""
 while True:
     opcao_host = int(input("Qual tipo de host deseja ([1] Hosts) ([2] Bits) ([3] Mask): ")) 
-    if opcao_host > 0 or opcao_host < 4:
+    if opcao_host == 3:
+        usuarios = str(input(f"Digite o valor correspondente a {pegar_opcao[opcao_host - 1]}: "))
+        break
+    elif opcao_host == 1 or opcao_host == 2:
         while True:
             usuarios = int(input(f"Digite o valor correspondente aos {pegar_opcao[opcao_host - 1]}: "))
             if opcao_host == 2 and usuarios <= 31 and usuarios > 0 :
                 break
             elif opcao_host == 1 and usuarios >= 2 and usuarios < 1073741824:
                 break
-            elif opcao_host == 3:
-                break
-        conversor_bits_hosts(usuarios, opcao_host, rede)
-        conversor_bits_sub(rede)
         break
+conversor_bits_hosts(usuarios, opcao_host, rede)
+conversor_bits_sub(rede)
 
 print("")
-print(f"Tipo da rede ({pegar_opcao_ABC[opcao_rede - 1]})")
+#print(f"Tipo da rede ({pegar_opcao_ABC[opcao_rede - 1]})")
 print(f"A quantidade de hosts {rede[0]}")
 print(f"A quantidade de bits {rede[1]}")
 print(f"A máscara {rede[2]}")
-
 
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=tela-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
