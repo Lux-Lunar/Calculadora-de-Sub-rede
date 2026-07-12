@@ -66,10 +66,10 @@ def conversor_bits_sub(rede: list):
 pegar_opcao = ["hosts", "bits", "máscara"]
 pegar_opcao_ABC = ["A", "B", "C"]
 
-"""while True:
+while True:
     opcao_rede = int(input("Digite o tipo de rede que deseja ([1] A 10.0.0.0) ([2] B 172.16.0.0) ([3] C 192.168.0.0): "))
     if opcao_rede > 0 and opcao_rede < 4:
-        break"""
+        break
 while True:
     opcao_host = int(input("Qual tipo de host deseja ([1] Hosts) ([2] Bits) ([3] Mask): ")) 
     if opcao_host == 3:
@@ -87,7 +87,7 @@ conversor_bits_hosts(usuarios, opcao_host, rede)
 conversor_bits_sub(rede)
 
 print("")
-#print(f"Tipo da rede ({pegar_opcao_ABC[opcao_rede - 1]})")
+print(f"Tipo da rede ({pegar_opcao_ABC[opcao_rede - 1]})")
 print(f"A quantidade de hosts {rede[0]}")
 print(f"A quantidade de bits {rede[1]}")
 print(f"A máscara {rede[2]}")
