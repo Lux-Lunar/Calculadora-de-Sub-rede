@@ -16,6 +16,7 @@ def conversor_bits_hosts(hosts, escolha: int, rede: list):
     bit_list.sort(reverse = True)
 
     if escolha == 3 or escolha == 2:
+        #Essa parte faz a conversão de sub-mask para binario depois para Bits (Se já estiver em bits ela retorna a quantidade de hosts)   
         if escolha == 3: 
             hosts = hosts.split(".")
             for i in range(3):
